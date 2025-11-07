@@ -2,17 +2,16 @@
 
 A modern personal finance management application built with Next.js 15 and HeroUI. Track your revenues, expenses, and investments all in one beautiful interface.
 
-## ✨ Features
+##  Features
 
-- 💰 **Revenue Tracking** - Monitor your income sources
-- 💸 **Expense Management** - Keep track of your spending
-- 📈 **Investment Portfolio** - Manage your investments
-- 🎨 **Modern UI** - Beautiful interface built with HeroUI components
-- 🌓 **Dark Mode** - Seamless theme switching
-- 📱 **Responsive Design** - Works perfectly on all devices
-- ⚡ **Fast Performance** - Powered by Next.js 15 with Turbopack
+-  **Revenue Tracking** - Monitor your income sources
+-  **Expense Management** - Keep track of your spending
+-  **Investment Portfolio** - Manage your investments
+-  **Modern UI** - Beautiful interface built with HeroUI components
+-  **Responsive Design** - Works perfectly on all devices
+-  **Fast Performance** - Powered by Next.js 15 with Turbopack
 
-## 🛠️ Technologies
+##  Technologies
 
 - **Framework:** [Next.js 15](https://nextjs.org/) with App Router
 - **UI Library:** [HeroUI v2](https://heroui.com/)
@@ -22,7 +21,7 @@ A modern personal finance management application built with Next.js 15 and HeroU
 - **Icons:** [Lucide React](https://lucide.dev/)
 - **Theme Management:** [next-themes](https://github.com/pacocoursey/next-themes)
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -100,18 +99,18 @@ trackmymoney-front/
 └── package.json
 ```
 
-## 🎯 Available Scripts
+##  Available Scripts
 
 - `npm run dev` - Start development server with Turbopack
 - `npm run build` - Build for production
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
 
-## 🎨 Design System
+##  Design System
 
 Visit `/design` in the application to explore the design system and component library.
 
-## 🔧 Configuration
+##  Configuration
 
 The application can be customized through:
 - `src/config/site.ts` - Site metadata and navigation
@@ -119,11 +118,11 @@ The application can be customized through:
 - `tailwind.config.js` - Tailwind CSS configuration
 - `next.config.js` - Next.js configuration
 
-## 📝 License
+##  License
 
 Licensed under the [MIT license](LICENSE).
 
-## 🤝 Contributing
+##  Contributing
 
 Contributions, issues, and feature requests are welcome! Feel free to check the issues page.
 
