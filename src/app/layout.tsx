@@ -1,7 +1,6 @@
 import "@/src/lib/storage-polyfill";
 import "@/src/styles/globals.css";
 import { Metadata, Viewport } from "next";
-import { Link } from "@heroui/link";
 import clsx from "clsx";
 import { Button } from "@heroui/button";
 import { SparklesIcon } from "@/src/components/icons";
