@@ -42,7 +42,7 @@ export const LogoText = () => (
   <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
     <DollarSign className="w-6 h-6 text-white" strokeWidth={2.5} />
   </div>
-  <p className="font-bold text-primarydark text-lg"><span className="text-black">Bolso</span>Seguro</p>
+  <p className="font-bold text-primarydark text-lg cursor-default"><span className="text-black">Bolso</span>Seguro</p>
 </div>
 );
 
