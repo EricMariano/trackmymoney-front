@@ -11,6 +11,7 @@ import { LogoText } from "@/src/components/icons";
 import { AvatarDropdown } from "./c-avatar-drop";
 import { usePathname } from "next/navigation";
 import { siteConfig } from "@/src/config/site";
+import { ThemeSwitch } from "./theme-switch";
 
 
 export default function NavbarComponent() {
@@ -28,7 +29,13 @@ export default function NavbarComponent() {
         {siteConfig.navItems.map((item) => (
           <NavbarItem key={item.href} isActive={pathname === item.href}>
             <Link 
-              color={pathname === item.href ? "primary" : "foreground"}
+              color={
+                pathname === item.href 
+                  ? item.href === "/expenses" 
+                    ? "danger" 
+                    : "primary"
+                  : "foreground"
+              }
               href={item.href}
             >
               {item.label}
@@ -38,6 +45,7 @@ export default function NavbarComponent() {
       </NavbarContent>
 
       <NavbarContent justify="end">
+        <ThemeSwitch />
         <AvatarDropdown />
       </NavbarContent>
     </Navbar>

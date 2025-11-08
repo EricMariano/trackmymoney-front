@@ -1,7 +1,15 @@
 import * as React from "react";
 
 import { IconSvgProps } from "@/src/types";
-import { DollarSign, BanknoteArrowUp, PiggyBank, CreditCard, BanknoteArrowDown } from "lucide-react";
+import { DollarSign, BanknoteArrowUp, PiggyBank, CreditCard, BanknoteArrowDown, HandCoins , Bitcoin} from "lucide-react";
+
+export const BitcoinIcon: React.FC<{ className?: string }> = ({ className = "w-6 h-6 text-white" }) => (
+  <Bitcoin className={className} strokeWidth={2.5} />
+);
+
+export const HandCoinsIcon: React.FC<{ className?: string }> = ({ className = "w-6 h-6 text-white" }) => (
+  <HandCoins className={className} strokeWidth={2.5} />
+);
 
 export const WalletIcon: React.FC<IconSvgProps> = ({
   size = 24,
@@ -42,7 +50,7 @@ export const LogoText = () => (
   <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
     <DollarSign className="w-6 h-6 text-white" strokeWidth={2.5} />
   </div>
-  <p className="font-bold text-primarydark text-lg cursor-default"><span className="text-black">Bolso</span>Seguro</p>
+  <p className="font-bold text-primarydark text-lg cursor-default"><span className="text-black">Meu</span>Bolso</p>
 </div>
 );
 

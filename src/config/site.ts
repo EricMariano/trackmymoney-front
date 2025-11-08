@@ -9,16 +9,16 @@ export const siteConfig = {
       href: "/",
     },
     {
+      label: "Investimentos",
+      href: "/investments",
+    },
+    {
       label: "Receitas",
       href: "/revenues",
     },
     {
       label: "Despesas",
       href: "/expenses",
-    },
-    {
-      label: "Investimentos",
-      href: "/investments",
     },
   ],
 };
