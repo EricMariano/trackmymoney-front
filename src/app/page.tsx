@@ -1,5 +1,6 @@
 "use client";
 import { HomeCards } from "@/src/components/home/c-cards";
+import { HomeDashboard } from "@/src/components/home/c-dashboard";
 
 export default function Home() {
   return (
@@ -7,7 +8,10 @@ export default function Home() {
     <div className="mb-4">
       <h1 className="text-2xl font-bold">Olá, <span className="text-primarydark">Ana Carolina</span></h1>
     </div>
+      <div className="flex flex-col gap-4">
       <HomeCards />
+      <HomeDashboard />
+      </div>
     </>
   );
 }
