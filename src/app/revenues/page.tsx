@@ -1,4 +1,5 @@
 import { RevenuesCards } from "./c-cards";
+import { RevenuesTable } from "./c-table";
 
 export default function RevenuesPage() {
     return (
@@ -6,7 +7,10 @@ export default function RevenuesPage() {
         <div className="mb-4">
           <h1 className="text-2xl font-bold">Receitas</h1>
         </div>
-        <RevenuesCards />
+        <div className="flex flex-col gap-4">
+          <RevenuesCards />
+          <RevenuesTable />
+        </div>
       </>
     )
 }
