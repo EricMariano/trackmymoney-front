@@ -49,17 +49,17 @@ export default function RootLayout({
             <NavbarComponent />
             <main className="w-full pt-10 px-6 flex-grow">
               {children}
+              <div className="flex items-center justify-end fixed bottom-0 right-0 p-6">
+                <Button
+                  isIconOnly
+                  className="shadow-lg"
+                  radius="full"
+                  variant="light"
+                > 
+                  <SparklesIcon /> 
+                </Button>
+            </div>
             </main>
-            <footer className="w-full flex items-center justify-end p-6">
-            <Button
-              isIconOnly
-              className="shadow-lg"
-              radius="full"
-              variant="light"
-            > 
-              <SparklesIcon /> 
-            </Button>
-            </footer>
           </div>
         </Providers>
       </body>
