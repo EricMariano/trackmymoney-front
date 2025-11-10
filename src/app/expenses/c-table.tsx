@@ -62,10 +62,8 @@ const data: IExpense[] = [
   },
 ];
 
-// Categorias únicas para o filtro
 const categories = Array.from(new Set(data.map((item) => item.category)));
 
-// Custom filter para range numérico
 const numberRangeFilterFn: FilterFn<IExpense> = (
   row,
   columnId,
@@ -76,7 +74,6 @@ const numberRangeFilterFn: FilterFn<IExpense> = (
   return value >= (min || 0) && value <= (max || Infinity);
 };
 
-// Custom filter para range de datas
 const dateRangeFilterFn: FilterFn<IExpense> = (row, columnId, filterValue) => {
   const dateValue = new Date(row.getValue(columnId) as string);
   const [startDate, endDate] = filterValue as [Date | null, Date | null];
@@ -113,7 +110,6 @@ export function ExpensesTable() {
     },
   });
 
-  // Specific filters by column
   const categoryFilter =
     (columnFilters.find((f) => f.id === "category")?.value as string) || "";
   const minAmount =

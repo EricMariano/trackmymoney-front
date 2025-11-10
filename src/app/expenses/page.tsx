@@ -1,6 +1,6 @@
 import { ExpensesCards } from "./c-cards";
 import { ExpensesTable } from "./c-table";
-import { ExpensesCreateNewBtn } from "./c-create-new-btn";
+import { ExpensesCreateNew } from "./c-create-new";
 import { ExpensesCategorySlider } from "./c-category-slider";
 
 export default function ExpensesPage() {
@@ -8,7 +8,7 @@ export default function ExpensesPage() {
       <>
         <div className="mb-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold">Despesas</h1>
-          <ExpensesCreateNewBtn />
+          <ExpensesCreateNew />
         </div>
         <div className="flex flex-col gap-4">
           <ExpensesCards />
