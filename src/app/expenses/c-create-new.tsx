@@ -22,6 +22,9 @@ export function ExpensesCreateNew() {
         <DropdownItem key="edit" shortcut="⌘⇧E">
           Gerenciar Categorias
         </DropdownItem>
+        <DropdownItem key="export" shortcut="⌘⇧X">
+          Exportar Despesas
+        </DropdownItem>
       </DropdownMenu>
     </Dropdown>
   );

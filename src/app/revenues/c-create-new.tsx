@@ -22,6 +22,9 @@ export function RevenuesCreateNew() {
         <DropdownItem key="edit" shortcut="⌘⇧E">
           Gerenciar Categorias
         </DropdownItem>
+        <DropdownItem key="export" shortcut="⌘⇧X">
+          Exportar Receitas
+        </DropdownItem>
       </DropdownMenu>
     </Dropdown>
   );
