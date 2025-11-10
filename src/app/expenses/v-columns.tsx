@@ -1,31 +1,24 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { IRevenue } from "../interfaces/revenues";
+import { IExpense } from "@/src/app/interfaces/expenses";
 
-export const columns: ColumnDef<IRevenue>[] = [
+export const columns: ColumnDef<IExpense>[] = [
     {
         header: "Descrição",
         accessorKey: "description",
         enableColumnFilter: true,
-        filterFn: "includesString", // Filtro de texto
+        filterFn: "includesString",
     },
     {
         header: "Valor",
         accessorKey: "amount",
         enableColumnFilter: true,
-        filterFn: "inNumberRange", // Filtro de range numérico
-        cell: ({ getValue }) => {
-            const value = getValue() as number;
-            return new Intl.NumberFormat("pt-BR", {
-                style: "currency",
-                currency: "BRL",
-            }).format(value);
-        },
+        filterFn: "inNumberRange",
     },
     {
         header: "Categoria",
         accessorKey: "category",
         enableColumnFilter: true,
-        filterFn: "equalsString", // Filtro exato (para select)
+        filterFn: "includesString",
     },
     {
         header: "Data",

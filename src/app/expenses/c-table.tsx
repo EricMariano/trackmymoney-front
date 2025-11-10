@@ -17,7 +17,6 @@ import { Button } from "@heroui/button";
 import { Popover, PopoverTrigger, PopoverContent } from "@heroui/popover";
 import { DateRangePicker } from "@heroui/date-picker";
 import { columns } from "./v-columns";
-import { IRevenue } from "../interfaces/revenues";
 import {
   Search,
   X,
@@ -26,39 +25,40 @@ import {
   ArrowDown,
   Filter,
 } from "lucide-react";
+import { IExpense } from "@/src/app/interfaces/expenses";
 
-const data: IRevenue[] = [
+const data: IExpense[] = [
   {
     id: "1",
-    description: "Salário",
+    description: "Alimentação",
     amount: 5000,
     isFixed: true,
     date: "2025-01-01",
-    category: "Salário",
+    category: "Alimentação",
   },
   {
     id: "2",
-    description: "Freelance",
+    description: "Uber",
     amount: 1500,
     isFixed: false,
     date: "2025-01-15",
-    category: "Freelance",
+    category: "Transporte",
   },
   {
     id: "3",
-    description: "Investimentos",
+    description: "Saída com amigas",
     amount: 250,
     isFixed: false,
     date: "2025-01-10",
-    category: "Investimentos",
+    category: "Lazer",
   },
   {
     id: "4",
-    description: "Bônus",
+    description: "Aluguel",
     amount: 800,
     isFixed: false,
     date: "2025-01-20",
-    category: "Outros",
+    category: "Moradia",
   },
 ];
 
@@ -66,7 +66,7 @@ const data: IRevenue[] = [
 const categories = Array.from(new Set(data.map((item) => item.category)));
 
 // Custom filter para range numérico
-const numberRangeFilterFn: FilterFn<IRevenue> = (
+const numberRangeFilterFn: FilterFn<IExpense> = (
   row,
   columnId,
   filterValue
@@ -77,7 +77,7 @@ const numberRangeFilterFn: FilterFn<IRevenue> = (
 };
 
 // Custom filter para range de datas
-const dateRangeFilterFn: FilterFn<IRevenue> = (row, columnId, filterValue) => {
+const dateRangeFilterFn: FilterFn<IExpense> = (row, columnId, filterValue) => {
   const dateValue = new Date(row.getValue(columnId) as string);
   const [startDate, endDate] = filterValue as [Date | null, Date | null];
 
@@ -87,7 +87,7 @@ const dateRangeFilterFn: FilterFn<IRevenue> = (row, columnId, filterValue) => {
   return dateValue >= startDate! && dateValue <= endDate!;
 };
 
-export function RevenuesTable() {
+export function ExpensesTable() {
   const [globalFilter, setGlobalFilter] = useState("");
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -113,7 +113,7 @@ export function RevenuesTable() {
     },
   });
 
-  // Filtros específicos por coluna
+  // Specific filters by column
   const categoryFilter =
     (columnFilters.find((f) => f.id === "category")?.value as string) || "";
   const minAmount =
@@ -130,7 +130,7 @@ export function RevenuesTable() {
       {/* Search and Filters Bar */}
       <div className="flex gap-3 items-center">
         <Input
-          placeholder="Buscar receitas..."
+          placeholder="Buscar despesas..."
           value={globalFilter}
           onValueChange={setGlobalFilter}
           size="lg"
@@ -156,7 +156,7 @@ export function RevenuesTable() {
               size="lg"
               className="shadow-none border"
               variant={columnFilters.length > 0 ? "solid" : "bordered"}
-              color={columnFilters.length > 0 ? "success" : "default"}
+              color={columnFilters.length > 0 ? "danger" : "default"}
               startContent={<Filter className="w-5 h-5" />}
             >
               Filtrar
@@ -312,7 +312,7 @@ export function RevenuesTable() {
                   colSpan={columns.length}
                   className="px-6 py-8 text-center text-gray-500"
                 >
-                  Nenhuma receita encontrada
+                  Nenhuma despesa encontrada
                 </td>
               </tr>
             ) : (
@@ -338,7 +338,7 @@ export function RevenuesTable() {
 
       {/* Footer */}
       <div className="text-sm text-gray-500">
-        Mostrando {table.getRowModel().rows.length} de {data.length} receitas
+        Mostrando {table.getRowModel().rows.length} de {data.length} despesas
       </div>
     </div>
   );
