@@ -1,76 +1,72 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
 import { Link } from "@heroui/link";
 import { Divider } from "@heroui/divider";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
-import { useAuth } from "@/src/contexts/auth-context";
+import { signup } from "@/src/lib/auth-api";
 
-export default function LoginPage() {
+export default function SignupPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const { login } = useAuth();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const [formError, setFormError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  const registeredMessage = useMemo(() => {
-    const registered = searchParams.get("registered");
-    return registered === "1"
-      ? "Conta criada com sucesso! Faça login para continuar."
-      : null;
-  }, [searchParams]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setError(null);
+    setFormError(null);
     setIsLoading(true);
 
     try {
-      await login({ email, password });
-      router.push("/dashboard");
+      await signup({ name, email, password });
+      router.push("/?registered=1");
     } catch (err) {
       const message =
-        err instanceof Error ? err.message : "Erro ao fazer login.";
-      setError(message);
+        err instanceof Error ? err.message : "Não foi possível concluir seu cadastro.";
+      setFormError(message);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const isSubmitDisabled = !email || !password || isLoading;
+  const isSubmitDisabled =
+    !name || !email || password.length < 8 || isLoading;
 
   return (
-    <section className="flex min-h-screen items-center justify-center px-4 py-12">
+    <section className="flex flex-1 items-center justify-center py-12">
       <Card className="w-full max-w-md border border-default-100 bg-content1/60 backdrop-blur">
         <CardHeader className="flex flex-col gap-2 text-center">
-          <h1 className="text-2xl font-semibold">Bem-vindo de volta</h1>
+          <h1 className="text-2xl font-semibold">Crie sua conta</h1>
           <p className="text-sm text-default-500">
-            Entre para acessar seus dashboards financeiros.
+            Comece a organizar suas finanças em poucos minutos.
           </p>
         </CardHeader>
 
         <Divider />
 
         <CardBody className="flex flex-col gap-6">
-          {registeredMessage && (
-            <p className="rounded-medium bg-success-50 px-4 py-3 text-sm text-success-700 dark:bg-success-100/10 dark:text-success-300">
-              {registeredMessage}
-            </p>
-          )}
-
-          {error && (
+          {formError && (
             <p className="rounded-medium bg-danger-50 px-4 py-3 text-sm text-danger-700 dark:bg-danger-100/10 dark:text-danger-300">
-              {error}
+              {formError}
             </p>
           )}
 
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+            <Input
+              isRequired
+              label="Nome completo"
+              labelPlacement="outside"
+              placeholder="Ana Carolina"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+            />
+
             <Input
               isRequired
               label="E-mail"
@@ -85,10 +81,11 @@ export default function LoginPage() {
               isRequired
               label="Senha"
               labelPlacement="outside"
-              placeholder="Digite sua senha"
+              placeholder="Mínimo de 8 caracteres"
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
+              description="Deve ter ao menos 8 caracteres."
             />
 
             <Button
@@ -97,14 +94,14 @@ export default function LoginPage() {
               isLoading={isLoading}
               isDisabled={isSubmitDisabled}
             >
-              Entrar
+              Criar conta
             </Button>
           </form>
 
           <p className="text-center text-sm text-default-500">
-            Ainda não tem conta?{" "}
-            <Link color="primary" href="/signup" underline="always">
-              Cadastre-se
+            Já tem uma conta?{" "}
+            <Link color="primary" href="/" underline="always">
+              Fazer login
             </Link>
           </p>
         </CardBody>
@@ -112,3 +109,5 @@ export default function LoginPage() {
     </section>
   );
 }
+
+

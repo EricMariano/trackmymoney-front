@@ -3,7 +3,7 @@
 import type { ButtonProps } from "@heroui/button";
 import type { CardProps } from "@heroui/card";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { ResponsiveContainer, PieChart, Pie, Tooltip, Cell } from "recharts";
 import { Card } from "@heroui/card";
 import { Button } from "@heroui/button";
@@ -28,38 +28,65 @@ type CircleChartProps = {
   chartData: ChartData[];
 };
 
-const data: CircleChartProps[] = [
-  {
-    title: "Receitas por categoria",
-    categories: ["Salário", "Freelance", "Investimentos", "Outros"],
-    color: "success",
-    chartData: [
-      {name: "Salário", value: 5000},
-      {name: "Freelance", value: 1000},
-      {name: "Investimentos", value: 1000},
-      {name: "Outros", value: 1000},
-    ],
-  },
-  {
-    title: "Gastos por categoria",
-    categories: ["Alimentação", "Transporte", "Moradia", "Lazer", "Saúde", "Educação", "Outros"],
-    color: "red",
-    chartData: [
-      {name: "Alimentação", value: 1000},
-      {name: "Transporte", value: 500},
-      {name: "Moradia", value: 1000},
-      {name: "Lazer", value: 500},
-      {name: "Saúde", value: 200},
-      {name: "Educação", value: 100},
-      {name: "Outros", value: 100},
-    ],
-  },
-];
+type SeriesPoint = {
+  month: string;
+  total: number;
+};
 
-export function HomeDashboard() {
+type HomeDashboardProps = {
+  revenueSeries: SeriesPoint[];
+  expenseSeries: SeriesPoint[];
+};
+
+function formatMonthLabel(month: string) {
+  const [year, monthPart] = month.split("-");
+  const date = new Date(Number(year), Number(monthPart) - 1);
+  return date.toLocaleDateString("pt-BR", { month: "short", year: "2-digit" });
+}
+
+function toChartConfig(
+  title: string,
+  color: CircleChartProps["color"],
+  series: SeriesPoint[],
+): CircleChartProps {
+  if (series.length === 0) {
+    return {
+      title,
+      color,
+      categories: ["Sem dados"],
+      chartData: [{ name: "Sem dados", value: 0 }],
+    };
+  }
+
+  const categories = series.map((item) => formatMonthLabel(item.month));
+  const chartData = series.map((item) => ({
+    name: formatMonthLabel(item.month),
+    value: item.total,
+  }));
+
+  return {
+    title,
+    color,
+    categories,
+    chartData,
+  };
+}
+
+export function HomeDashboard({
+  revenueSeries,
+  expenseSeries,
+}: HomeDashboardProps) {
+  const chartConfigs = useMemo(
+    () => [
+      toChartConfig("Receitas por mês", "success", revenueSeries),
+      toChartConfig("Despesas por mês", "red", expenseSeries),
+    ],
+    [revenueSeries, expenseSeries],
+  );
+
   return (
-    <dl className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
-      {data.map((item, index) => (
+    <dl className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2">
+      {chartConfigs.map((item, index) => (
         <CircleChartCard key={index} {...item} />
       ))}
     </dl>

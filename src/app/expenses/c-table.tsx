@@ -27,43 +27,6 @@ import {
 } from "lucide-react";
 import { IExpense } from "@/src/app/interfaces/expenses";
 
-const data: IExpense[] = [
-  {
-    id: "1",
-    description: "Alimentação",
-    amount: 5000,
-    isFixed: true,
-    date: "2025-01-01",
-    category: "Alimentação",
-  },
-  {
-    id: "2",
-    description: "Uber",
-    amount: 1500,
-    isFixed: false,
-    date: "2025-01-15",
-    category: "Transporte",
-  },
-  {
-    id: "3",
-    description: "Saída com amigas",
-    amount: 250,
-    isFixed: false,
-    date: "2025-01-10",
-    category: "Lazer",
-  },
-  {
-    id: "4",
-    description: "Aluguel",
-    amount: 800,
-    isFixed: false,
-    date: "2025-01-20",
-    category: "Moradia",
-  },
-];
-
-const categories = Array.from(new Set(data.map((item) => item.category)));
-
 const numberRangeFilterFn: FilterFn<IExpense> = (
   row,
   columnId,
@@ -84,11 +47,24 @@ const dateRangeFilterFn: FilterFn<IExpense> = (row, columnId, filterValue) => {
   return dateValue >= startDate! && dateValue <= endDate!;
 };
 
-export function ExpensesTable() {
+type ExpensesTableProps = {
+  data: IExpense[];
+  isLoading?: boolean;
+};
+
+export function ExpensesTable({ data, isLoading = false }: ExpensesTableProps) {
   const [globalFilter, setGlobalFilter] = useState("");
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [dateRange, setDateRange] = useState<any>(null);
+
+  const categories = useMemo(
+    () =>
+      Array.from(
+        new Set(data.map((item) => item.category ?? "Sem categoria")),
+      ),
+    [data],
+  );
 
   const table = useReactTable({
     data,
@@ -301,8 +277,17 @@ export function ExpensesTable() {
               </tr>
             ))}
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {table.getRowModel().rows.length === 0 ? (
+          <tbody className="divide-y divide-gray-200 bg-white">
+            {isLoading ? (
+              <tr>
+                <td
+                  colSpan={columns.length}
+                  className="px-6 py-8 text-center text-gray-500"
+                >
+                  Carregando despesas...
+                </td>
+              </tr>
+            ) : table.getRowModel().rows.length === 0 ? (
               <tr>
                 <td
                   colSpan={columns.length}
@@ -317,11 +302,11 @@ export function ExpensesTable() {
                   {row.getVisibleCells().map((cell) => (
                     <td
                       key={cell.id}
-                      className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                      className="whitespace-nowrap px-6 py-4 text-sm text-gray-900"
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </td>
                   ))}

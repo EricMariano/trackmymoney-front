@@ -27,44 +27,6 @@ import {
   Filter,
 } from "lucide-react";
 
-const data: IRevenue[] = [
-  {
-    id: "1",
-    description: "Salário",
-    amount: 5000,
-    isFixed: true,
-    date: "2025-01-01",
-    category: "Salário",
-  },
-  {
-    id: "2",
-    description: "Freelance",
-    amount: 1500,
-    isFixed: false,
-    date: "2025-01-15",
-    category: "Freelance",
-  },
-  {
-    id: "3",
-    description: "Investimentos",
-    amount: 250,
-    isFixed: false,
-    date: "2025-01-10",
-    category: "Investimentos",
-  },
-  {
-    id: "4",
-    description: "Bônus",
-    amount: 800,
-    isFixed: false,
-    date: "2025-01-20",
-    category: "Outros",
-  },
-];
-
-// Categorias únicas para o filtro
-const categories = Array.from(new Set(data.map((item) => item.category)));
-
 // Custom filter para range numérico
 const numberRangeFilterFn: FilterFn<IRevenue> = (
   row,
@@ -87,11 +49,27 @@ const dateRangeFilterFn: FilterFn<IRevenue> = (row, columnId, filterValue) => {
   return dateValue >= startDate! && dateValue <= endDate!;
 };
 
-export function RevenuesTable() {
+type RevenuesTableProps = {
+  data: IRevenue[];
+  isLoading?: boolean;
+};
+
+export function RevenuesTable({
+  data,
+  isLoading = false,
+}: RevenuesTableProps) {
   const [globalFilter, setGlobalFilter] = useState("");
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [dateRange, setDateRange] = useState<any>(null);
+
+  const categories = useMemo(
+    () =>
+      Array.from(
+        new Set(data.map((item) => item.category ?? "Sem categoria")),
+      ),
+    [data],
+  );
 
   const table = useReactTable({
     data,
@@ -306,7 +284,16 @@ export function RevenuesTable() {
             ))}
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {table.getRowModel().rows.length === 0 ? (
+            {isLoading ? (
+              <tr>
+                <td
+                  colSpan={columns.length}
+                  className="px-6 py-8 text-center text-gray-500"
+                >
+                  Carregando receitas...
+                </td>
+              </tr>
+            ) : table.getRowModel().rows.length === 0 ? (
               <tr>
                 <td
                   colSpan={columns.length}

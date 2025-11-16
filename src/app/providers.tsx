@@ -8,6 +8,9 @@ import { useRouter } from "next/navigation";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { I18nProvider } from "@react-aria/i18n";
 
+import { AppShell } from "@/src/components/app-shell";
+import { AuthProvider } from "@/src/contexts/auth-context";
+
 export interface ProvidersProps {
   children: React.ReactNode;
   themeProps?: ThemeProviderProps;
@@ -27,7 +30,11 @@ export function Providers({ children, themeProps }: ProvidersProps) {
   return (
     <HeroUIProvider navigate={router.push} locale="pt-BR">
       <I18nProvider locale="pt-BR">
-        <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
+        <NextThemesProvider {...themeProps}>
+          <AuthProvider>
+            <AppShell>{children}</AppShell>
+          </AuthProvider>
+        </NextThemesProvider>
       </I18nProvider>
     </HeroUIProvider>
   );

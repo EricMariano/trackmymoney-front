@@ -1,68 +1,99 @@
+"use client";
+
 import { Card, CardBody } from "@heroui/card";
-import { WalletIcon, BanknoteArrowUpIcon, BanknoteArrowDownIcon, PiggyBankIcon } from "@/src/components/icons";
+import {
+  WalletIcon,
+  BanknoteArrowUpIcon,
+  BanknoteArrowDownIcon,
+  PiggyBankIcon,
+} from "@/src/components/icons";
+import { formatCurrency } from "@/src/lib/formatters";
 
-export function HomeCards() {
-    return (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <Card className="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white shadow-lg">
-                <CardBody className="p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                        <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                            <WalletIcon className="w-6 h-6" />
-                        </div>
-                        <div>
-                            <p className="text-sm text-emerald-100">Saldo Total</p>
-                            <p className="text-2xl font-bold">R$ 5.200,00</p>
-                        </div>
-                    </div>
-                    <p className="text-sm text-emerald-100">↑ 12% este mês</p>
-                </CardBody>
-            </Card>
+type HomeCardsProps = {
+  totals: {
+    net: number;
+    revenues: number;
+    expenses: number;
+  };
+};
 
-            <Card className="border border-default-200 hover:shadow-lg transition-shadow">
-                <CardBody className="p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                        <div className="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center">
-                            <PiggyBankIcon className="w-6 h-6 text-secondary-600" />
-                        </div>
-                        <div>
-                            <p className="text-sm text-default-600">Melhor Investimento</p>
-                            <p className="text-2xl font-bold">CDB Banco Inter</p>
-                        </div>
-                    </div>
-                    <p className="text-sm text-secondary-600">↑ 8% este mês</p>
-                </CardBody>
-            </Card>
+function savingsRate(revenues: number, expenses: number) {
+  if (revenues <= 0) return 0;
+  return Math.max(0, ((revenues - expenses) / revenues) * 100);
+}
 
-            <Card className="border border-default-200 hover:shadow-lg transition-shadow">
-                <CardBody className="p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                        <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
-                            <BanknoteArrowUpIcon className="w-6 h-6 text-emerald-600" />
-                        </div>
-                        <div>
-                            <p className="text-sm text-default-600">Receitas</p>
-                            <p className="text-2xl font-bold">R$ 8.480,00</p>
-                        </div>
-                    </div>
-                    <p className="text-sm text-emerald-600">Mês atual</p>
-                </CardBody>
-            </Card>
+export function HomeCards({ totals }: HomeCardsProps) {
+  const rate = savingsRate(totals.revenues, totals.expenses);
 
-            <Card className="border border-default-200 hover:shadow-lg transition-shadow">
-                <CardBody className="p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                        <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                            <BanknoteArrowDownIcon className="w-6 h-6 text-red-600" />
-                        </div>
-                        <div>
-                            <p className="text-sm text-default-600">Despesas</p>
-                            <p className="text-2xl font-bold">R$ 3.280,00</p>
-                        </div>
-                    </div>
-                    <p className="text-sm text-red-600">↓ 5% vs anterior</p>
-                </CardBody>
-            </Card>
-        </div>
-    )
+  return (
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
+      <Card className="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white shadow-lg">
+        <CardBody className="p-6">
+          <div className="mb-4 flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-white/20">
+              <WalletIcon className="h-6 w-6" />
+            </div>
+            <div>
+              <p className="text-sm text-emerald-100">Saldo consolidado</p>
+              <p className="text-2xl font-bold">{formatCurrency(totals.net)}</p>
+            </div>
+          </div>
+          <p className="text-sm text-emerald-100">
+            {totals.net >= 0 ? "Você está no positivo" : "Atenção: saldo negativo"}
+          </p>
+        </CardBody>
+      </Card>
+
+      <Card className="border border-default-200 transition-shadow hover:shadow-lg">
+        <CardBody className="p-6">
+          <div className="mb-4 flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-100">
+              <BanknoteArrowUpIcon className="h-6 w-6 text-emerald-600" />
+            </div>
+            <div>
+              <p className="text-sm text-default-600">Receitas</p>
+              <p className="text-2xl font-bold">
+                {formatCurrency(totals.revenues)}
+              </p>
+            </div>
+          </div>
+          <p className="text-sm text-emerald-600">Tudo que entrou no período</p>
+        </CardBody>
+      </Card>
+
+      <Card className="border border-default-200 transition-shadow hover:shadow-lg">
+        <CardBody className="p-6">
+          <div className="mb-4 flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-red-100">
+              <BanknoteArrowDownIcon className="h-6 w-6 text-red-600" />
+            </div>
+            <div>
+              <p className="text-sm text-default-600">Despesas</p>
+              <p className="text-2xl font-bold">
+                {formatCurrency(totals.expenses)}
+              </p>
+            </div>
+          </div>
+          <p className="text-sm text-red-600">Valor total gasto</p>
+        </CardBody>
+      </Card>
+
+      <Card className="border border-default-200 transition-shadow hover:shadow-lg">
+        <CardBody className="p-6">
+          <div className="mb-4 flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary-100">
+              <PiggyBankIcon className="h-6 w-6 text-secondary-600" />
+            </div>
+            <div>
+              <p className="text-sm text-default-600">Taxa de poupança</p>
+              <p className="text-2xl font-bold">{rate.toFixed(1)}%</p>
+            </div>
+          </div>
+          <p className="text-sm text-default-500">
+            Percentual das receitas que ficou com você
+          </p>
+        </CardBody>
+      </Card>
+    </div>
+  );
 }

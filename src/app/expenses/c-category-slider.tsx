@@ -1,5 +1,8 @@
+"use client";
+
 import { Slider } from "@heroui/slider";
 import { Card, CardBody } from "@heroui/card";
+import { formatCurrency } from "@/src/lib/formatters";
 
 interface CategoryData {
   category: string;
@@ -23,19 +26,19 @@ export function ExpensesCategorySlider({
   ];
 
   const categories = (data.length > 0 ? data : defaultCategories).sort(
-    (a, b) => b.percentage - a.percentage
+    (a, b) => b.percentage - a.percentage,
   );
 
   return (
-    <Card className="p-4 border border-default-200 shadow-none">
+    <Card className="border border-default-200 p-4 shadow-none">
       <CardBody>
-        <div className="flex flex-col gap-4 w-full">
+        <div className="flex w-full flex-col gap-4">
           {categories.map((item, index) => (
             <div key={index} className="flex items-center">
-              <span className="font-medium text-sm min-w-[120px]">
+              <span className="min-w-[120px] text-sm font-medium">
                 {item.category}
               </span>
-              <div className="flex-1">
+              <div className="flex-1 px-3">
                 <Slider
                   aria-label={`${item.category} - ${item.percentage}%`}
                   className="w-full"
@@ -43,13 +46,13 @@ export function ExpensesCategorySlider({
                   minValue={0}
                   maxValue={100}
                   value={item.percentage}
-                  isDisabled={true}
-                  hideThumb={true}
+                  isDisabled
+                  hideThumb
                   size="sm"
                 />
               </div>
-              <span className="text-sm text-default-500 min-w-[140px] text-right">
-                R$ {item.value.toFixed(2)} ({item.percentage}%)
+              <span className="min-w-[160px] text-right text-sm text-default-500">
+                {formatCurrency(item.value)} ({item.percentage}%)
               </span>
             </div>
           ))}
@@ -58,3 +61,4 @@ export function ExpensesCategorySlider({
     </Card>
   );
 }
+

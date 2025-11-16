@@ -1,40 +1,40 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { IRevenue } from "../interfaces/revenues";
+
+import type { IRevenue } from "@/src/app/interfaces/revenues";
+import { formatCurrency } from "@/src/lib/formatters";
 
 export const columns: ColumnDef<IRevenue>[] = [
-    {
-        header: "Descrição",
-        accessorKey: "description",
-        enableColumnFilter: true,
-        filterFn: "includesString", // Filtro de texto
+  {
+    header: "Descrição",
+    accessorKey: "description",
+    enableColumnFilter: true,
+    filterFn: "includesString",
+  },
+  {
+    header: "Valor",
+    accessorKey: "amount",
+    enableColumnFilter: true,
+    filterFn: "inNumberRange",
+    cell: ({ getValue }) => {
+      const value = getValue() as number;
+      return formatCurrency(value);
     },
-    {
-        header: "Valor",
-        accessorKey: "amount",
-        enableColumnFilter: true,
-        filterFn: "inNumberRange", // Filtro de range numérico
-        cell: ({ getValue }) => {
-            const value = getValue() as number;
-            return new Intl.NumberFormat("pt-BR", {
-                style: "currency",
-                currency: "BRL",
-            }).format(value);
-        },
+  },
+  {
+    header: "Categoria",
+    accessorKey: "category",
+    enableColumnFilter: true,
+    filterFn: "equalsString",
+  },
+  {
+    header: "Data",
+    accessorKey: "date",
+    enableColumnFilter: true,
+    filterFn: "inNumberRange",
+    cell: ({ getValue }) => {
+      const value = getValue() as string;
+      return new Date(value).toLocaleDateString("pt-BR");
     },
-    {
-        header: "Categoria",
-        accessorKey: "category",
-        enableColumnFilter: true,
-        filterFn: "equalsString", // Filtro exato (para select)
-    },
-    {
-        header: "Data",
-        accessorKey: "date",
-        enableColumnFilter: true,
-        filterFn: "inNumberRange",
-        cell: ({ getValue }) => {
-            const value = getValue() as string;
-            return new Date(value).toLocaleDateString("pt-BR");
-        },
-    },
+  },
 ];
+
